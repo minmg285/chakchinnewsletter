@@ -43,10 +43,14 @@ app.post("/",function(req,res){
         body:jsonData
     };
     request(options, function (error, response, body){
-        if(response.statusCode == 200){
-            res.sendFile(__dirname+"/success.html");
+        if(error){
+            res.send("error: "+error);
         }else{
-            res.sendFile(__dirname+"/failure.html");
+            if(response.statusCode == 200){
+                res.sendFile(__dirname+"/success.html");
+            }else{
+                res.sendFile(__dirname+"/failure.html");
+            }
         }
     });
    
@@ -59,7 +63,7 @@ app.post("/failure",function(req,res){
     res.redirect("/");
 });
 
-app.listen(3000, function (){
+app.listen(process.env.port || 3000, function (){
     console.log('Server is running on port 3000');
 });
 
